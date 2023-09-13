@@ -12,10 +12,10 @@ RUN apk add --no-cache rustup build-base jq && \
     rustup-init -y --default-toolchain nightly -c rustfmt -c rustc-dev -c rust-src
 
 RUN curl https://api.github.com/repos/vita-rust/cargo-vita/releases/latest | \
-        jq -r '.assets[] | select(.name|contains("x86_64-unknown-linux-gnu.tar.gz")) | .browser_download_url' | \
+        jq -r '.assets[] | select(.name|contains("x86_64-unknown-linux-musl.tar.gz")) | .browser_download_url' | \
         xargs -n1 curl -LsSf -o /tmp/cargo-vita.tar.gz && \
     tar -zxvf /tmp/cargo-vita.tar.gz -C /tmp && \
-    mv /tmp/cargo-vita-*linux-gnu/cargo-vita "${CARGO_HOME}/bin" && \
+    mv /tmp/cargo-vita-*linux-musl/cargo-vita "${CARGO_HOME}/bin" && \
     rm -rf /tmp/cargo-vita*
 
 # Install cargo make. Use a pre-build binary instead of compiling it
