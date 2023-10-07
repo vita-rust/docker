@@ -8,7 +8,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 # Install rust nightly with all the components required to build std
 # build-base (mainly cc and ld) is required to build std.
-RUN apk add --no-cache rustup build-base jq && \
+RUN apk add --no-cache rustup build-base jq perl && \
     rustup-init -y --default-toolchain nightly -c rustfmt -c rustc-dev -c rust-src
 
 RUN curl https://api.github.com/repos/vita-rust/cargo-vita/releases/latest | \
