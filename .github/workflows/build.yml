@@ -1,4 +1,3 @@
-
 name: Publish Docker image
 
 on:
@@ -6,7 +5,13 @@ on:
     branches: [main]
   schedule:
     # Every Monday at 02:00 UTC
-    - cron:  '0 2 * * 1'
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+    inputs:
+      rust_toolchain:
+        description: "Rust toolchain"
+        required: true
+        default: "nightly"
 
 jobs:
   push_to_registry:
@@ -38,3 +43,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: "RUST_TOOLCHAIN=${{ github.event.inputs.rust_toolchain || 'nightly' }}"
