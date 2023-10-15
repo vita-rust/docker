@@ -1,4 +1,15 @@
-FROM vitasdk/vitasdk
+FROM vitasdk/buildscripts:latest as build
+
+RUN apk add --no-cache git curl bash
+
+RUN git clone https://github.com/vitasdk/vdpm.git --depth=1 && \
+    cd vdpm/ && chmod +x ./*.sh && \
+    ./install-all.sh && cd .. && rm -fr vdpm/
+
+FROM vitasdk/buildscripts:latest
+
+RUN apk add --no-cache bash make pkgconf curl fakeroot libarchive-tools file xz cmake sudo
+COPY --from=build --chown=user ${VITASDK} ${VITASDK}
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
