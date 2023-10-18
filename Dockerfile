@@ -24,4 +24,5 @@ RUN rustup-init -y --default-toolchain ${RUST_TOOLCHAIN} -c rust-src && \
     ln -s /usr/local/rustup/toolchains/${RUST_TOOLCHAIN}-x86_64-unknown-linux-musl /usr/local/rustup/toolchains/nightly-x86_64-unknown-linux-musl || true
 
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | ash && \
-    cargo binstall --no-confirm --no-symlinks cargo-make cargo-vita
+    cargo binstall --no-confirm --no-symlinks \
+        cargo-make cargo-vita cargo-hack cargo-udeps cargo-machete cargo-deny cargo-release
