@@ -17,7 +17,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 
 # Install rust nightly with all the components required to build std
 # build-base (mainly cc and ld) is required to build std.
-RUN apk add --no-cache rustup build-base jq perl clang llvm
+RUN apk add --no-cache rustup build-base jq perl clang llvm openssl libressl-dev pkgconfig
 
 ARG RUST_TOOLCHAIN=nightly
 RUN rustup-init -y --default-toolchain ${RUST_TOOLCHAIN} -c rust-src && \
