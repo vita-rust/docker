@@ -48,6 +48,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: "RUST_TOOLCHAIN=${{ github.event.inputs.rust_toolchain || 'nightly' }}"
 
+      - name: Test built image
+        run: |
+          docker run \
+            --mount type=bind,source="$(pwd)"/test.sh,target=/test.sh,readonly \
+            ${{ steps.build.outputs.imageid }} \
+            /test.sh
+
       - name: Push image to ghcr
         run: |
           docker push --all-tags ${{ env.IMAGE_NAME }}
