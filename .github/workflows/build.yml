@@ -13,6 +13,9 @@ on:
         required: true
         default: "nightly"
 
+env:
+  IMAGE_NAME: ghcr.io/vita-rust/vitasdk-rs
+
 jobs:
   build:
     name: Build
@@ -32,15 +35,19 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/vita-rust/vitasdk-rs
+          images: ${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
 
-      - name: Build and push Docker image to ghcr
+      - name: Build Docker image
+        id: build
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: "RUST_TOOLCHAIN=${{ github.event.inputs.rust_toolchain || 'nightly' }}"
+
+      - name: Push image to ghcr
+        run: |
+          docker push --all-tags ${{ env.IMAGE_NAME }}
